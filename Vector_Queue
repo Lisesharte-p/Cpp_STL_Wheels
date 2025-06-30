@@ -1,0 +1,95 @@
+#include<iostream>
+#include<vector>
+#include<algorithm>
+#include<iterator>
+#include<memory>
+using namespace std;
+
+template<class target_itor,class source_itor>
+target_itor copy_(source_itor first, source_itor last, target_itor dest)
+{
+	while (first != last)
+	{
+		new (dest) typename std::iterator_traits<OutputIt>::value_type(*first);
+		//*res = *first;
+		dest++; first++;
+	}
+	return dest;
+}
+
+template<typename T>
+class Vector_Queue
+{
+private:
+	//vector<T> Queue;
+	T* data = nullptr;
+	size_t capacity;
+	int head = 0;
+	int tail = 0;
+	int count = 0;
+	void resize()
+	{
+		size_t new_capacity = 2 * capacity;
+		T* new_data=static_cast<T*>(operator new[](new_capacity * sizeof(T)));
+		if (!empty())
+		{
+			if (head < tail)
+			{
+				copy_(data + head, data + tail, new_data);
+
+			}
+			else
+			{
+				T* intern = copy_(data + head, data + capacity, intern);
+				copy_(data,data+tail,intern+capacity-head)
+			}
+			
+		}
+		for (int i = 0; i < count; i++)
+		{
+			data[(i + head) % capacity].~T();
+
+		}
+		operator delete[](data);
+		data = new_data;
+		capacity = new_capacity;
+		head = 0;
+		tail = count;
+
+
+	}
+	
+public:
+	Vector_Queue()
+	{
+		data = static_cast<T*>(operator new[](capacity * sizeof(T)));
+	}
+	void pop()
+	{
+
+	}
+	void put_in(T& new_in)
+	{
+
+	}
+	T& get_front()
+	{
+
+	}
+	T& get_end()
+	{
+
+	}
+	bool empty()
+	{
+
+	}
+	bool full()
+	{
+
+	}
+	size_t size()
+	{
+
+	}
+};
