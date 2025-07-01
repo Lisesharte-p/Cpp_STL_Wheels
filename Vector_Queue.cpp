@@ -23,7 +23,7 @@ class Vector_Queue
 private:
 	//vector<T> Queue;
 	T* data = nullptr;
-	size_t capacity;
+	size_t capacity=1;
 	int head = 0;
 	int tail = 0;
 	int count = 0;
@@ -64,32 +64,67 @@ public:
 	{
 		data = static_cast<T*>(operator new[](capacity * sizeof(T)));
 	}
+	~Vector_Queue()
+	{
+		for (int i = 0; i < count; i++)
+		{
+			data[(i + head) % capacity].~T();
+
+		}
+		operator delete[](data);
+	}
 	void pop()
 	{
-
+		if(empty)
+		{
+			throw out_of_range("queue is empty");
+		}
+		data[head].~T();
+		head=(head+1)%capacity;
+		--count;
 	}
-	void put_in(T& new_in)
+	void push(T& new_in)
 	{
+		if(count==capacity)
+		{
+			resize();
+			data[tail+1]=new_in;
+			count++;
+		}
+		else
+		{
+			data[tail+1]=new_in;
+			count++;
+		}
+		
 
 	}
 	T& get_front()
 	{
-
+		if(empty)
+		{
+			throw out_of_range("queue is empty");
+		}
+		return data[head];
 	}
 	T& get_end()
 	{
-
+		if(empty)
+		{
+			throw out_of_range("queue is empty");
+		}
+		return data[tail];
 	}
 	bool empty()
 	{
-
+		return count==0;
 	}
 	bool full()
 	{
-
+		return count==capacity;
 	}
 	size_t size()
 	{
-
+		return count;
 	}
 };
